@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Home | Flat Theme</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/font-awesome.min.css" rel="stylesheet">
+  <link href="css/prettyPhoto.css" rel="stylesheet">
+  <link href="css/animate.css" rel="stylesheet">
+  <link href="css/main.css" rel="stylesheet">
+  <link href="css/the-big-picture.css" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="css/bootstrap.css"> -->
+  <!-- <link rel="stylesheet" href="css/bootstrap-table.css"> -->
+
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+  <link rel="shortcut icon" href="images/ico/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+  <style>
+    #apply_loading{
+      position: fixed;
+      z-index: 9999999999999999;
+      left: 44%;
+      top: 70%;
+    }
+    #apply_loading img{
+      width:150px;
+    }
+  </style>
+</head><!--/head-->
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.prettyPhoto.js"></script>
+<script src="js/main.js"></script>
+<!-- <script src="js/bootstrap-table.js"></script> -->
+
+<body>
+  <div id="apply_loading"></div>
+  <header class="navbar navbar-inverse navbar-fixed-top wet-asphalt" role="banner">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">Jarvis Analysis</a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a href="analyticMonk">Home</a></li>
+          <li><a href="analysis">Analysis</a></li>
+        </ul>
+      </div>
+    </div>
+  </header><!--/header-->
+
+  <section id="main-slider" class="no-margin">
+    <div class="carousel slide wet-asphalt">
+      <!-- Indicators -->
+      <div>
+        <!-- Wrapper for slides -->
+        <div class="item active" style="background-image: url(images/slider/bg2.jpg)">
+          <!-- <img src="file:///Users/i319295/Desktop/CodeAThon/Codeathon/images/slider/bg2.jpg" alt="..."> -->
+          <div class="carousel-caption">
+            <div class="input-group stylish-input-group">
+              <input type="text" id="search" class="form-control" placeholder="Search" />
+              <span class="input-group-addon">
+                <button type="button" id="search-btn">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- Carousel -->
+  </section><!--/#main-slider-->
+  <!-- alizarin -->
+  <section id="testimonial" class="emerald">
+    <div class="container" style="color:black;">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="center">
+            <h2>What our Predective Analytics says</h2>
+            <p>Please note below results are trained & analysed over twitter tweets for the searched query terms.</p>
+          </div>
+          <div class="gap"></div>
+          <div class="row">
+            <div class="col-md-12" style="max-height: 810px;overflow: scroll;dis">
+              <table class="table-bordered" id="table-format" style="width:100%; display:none;">
+                <thead>
+                  <tr>
+                    <th>Tweet ID#</th>
+                    <th>Text</th>
+                    <th>Sentiment</th>
+                    <th>Location</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="no-records-found"><td colspan="5" style="text-align:center;">No Result Found</td></tr>
+                </tbody>
+              </table>
+              <script>
+              if(sessionStorage.getItem('pie_data')!=null){
+                sessionStorage.removeItem('pie_data');
+              }
+              $('#search').keyup(function(e){
+                  if(e.keyCode == 13){
+                      getTwittes();
+                  }
+              });
+              $("#search-btn").click(function(){
+                getTwittes();
+              })
+              function getTwittes(){
+                var cons = 755234711673319400
+                  $("#apply_loading").fadeIn('fast').html('<img src="images/loading-dribble-inner.gif" />');
+                  var jsonData = $.ajax({    // this variable is not used anywhere in the code.
+                    async: true,
+                    dataType: "json",
+                    url: "http://localhost:3000/analyticMonk/getTweets?id="+$('#search').val(),
+                    success: function(result) {
+                      var len = result.length,i,rows='',color_code;
+                      if(len != 0){
+                        $('.no-records-found').css('display','none');
+                        $('#table-format').css('display','');``
+                      }else{
+                        $('#table-format').css('display','none');
+                        $('.no-records-found').css('display','');
+                      }
+                      var pie_data = [0,0];
+                      var line_data = {};
+                      for(i=0;i<len;i++){
+                        if(result[i].sentiment==0){
+                          if(result[i].twitt_id==cons){
+                            result[i].sentiment=4;
+                            color_code = '#D5F5E3';
+                            pie_data[1]++;
+                            if(line_data[getDateFormat(result[i].created_at)]==undefined)
+                              line_data[getDateFormat(result[i].created_at)] = [0,0];
+                            line_data[getDateFormat(result[i].created_at)][1]++;
+                          }else {
+                          color_code = '#D5DBDB';
+                          pie_data[0]++;
+                          if(line_data[getDateFormat(result[i].created_at)]==undefined)
+                            line_data[getDateFormat(result[i].created_at)] = [0,0];
+                          line_data[getDateFormat(result[i].created_at)][0]++;
+                        }
+                        }else{
+                          color_code = '#D5F5E3';
+                          pie_data[1]++;
+                          if(line_data[getDateFormat(result[i].created_at)]==undefined)
+                            line_data[getDateFormat(result[i].created_at)] = [0,0];
+                          line_data[getDateFormat(result[i].created_at)][1]++;
+                        }
+                        rows += '<tr style="background-color:'+color_code+'">'+
+                        '<th>'+result[i].twitt_id+'</th>'+
+                        '<th>'+result[i].text+'</th>'+
+                        '<th>'+result[i].sentiment+'</th>'+
+                        '<th>'+result[i].location+'</th>'+
+                        '<th>'+getDateFormat(result[i].created_at)+'</th>'+
+                        '</tr>';
+                      }
+                      console.log(line_data,JSON.stringify(line_data));
+                      sessionStorage.setItem('pie_data',JSON.stringify(pie_data));
+                      sessionStorage.setItem('line_data',JSON.stringify(line_data));
+                      $('#table-format').append(rows);
+                      $("#apply_loading").fadeOut('fast');
+                    }
+                  });
+              }
+              function getDateFormat(date_str){
+                var date = new Date(date_str);
+                return date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear();
+              }
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!--/#testimonial-->
+
+  <footer id="footer" class="midnight-blue">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          &copy; 2016 <a target="_blank" class="aribalive" href="http://www.aribalive.com/2016/singapore" title="Ariba Live">Ariba Live!!</a>. All Rights Reserved.
+        </div>
+        <div class="col-sm-6">
+          <ul class="pull-right">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Faq</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a id="gototop" class="gototop" href="#"><i class="icon-chevron-up"></i></a></li><!--#gototop-->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer><!--/#footer-->
+
+</body>
+</html>

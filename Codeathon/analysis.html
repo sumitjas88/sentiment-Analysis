@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Home | Flat Theme</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/font-awesome.min.css" rel="stylesheet">
+  <link href="css/prettyPhoto.css" rel="stylesheet">
+  <link href="css/animate.css" rel="stylesheet">
+  <link href="css/main.css" rel="stylesheet">
+  <link href="css/the-big-picture.css" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="css/bootstrap.css"> -->
+  <!-- <link rel="stylesheet" href="css/bootstrap-table.css"> -->
+
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+  <link rel="shortcut icon" href="images/ico/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+  <style>
+    #apply_loading{
+      position: fixed;
+      z-index: 9999999999999999;
+      left: 44%;
+      top: 70%;
+    }
+    #apply_loading img{
+      width:150px;
+    }
+  </style>
+</head><!--/head-->
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.prettyPhoto.js"></script>
+<script src="js/main.js"></script>
+<script src="js/chart.js/dist/Chart.js"></script>
+<!-- <script src="js/bootstrap-table.js"></script> -->
+
+<body>
+  <div id="apply_loading"></div>
+  <header class="navbar navbar-inverse navbar-fixed-top wet-asphalt" role="banner">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">Jarvis Analysis</a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="analyticMonk">Home</a></li>
+          <li class="active"><a href="analysis">Analysis</a></li>
+        </ul>
+      </div>
+    </div>
+  </header><!--/header-->
+
+  <!-- alizarin -->
+  <section id="testimonial" class="emerald">
+    <div class="container" style="color:black;">
+      <div style="width:400px;height400px;margin: auto;">
+        <canvas id="pie_chart" width="400" height="400"></canvas>
+      </div>
+      <div style="width:400px;height400px;margin: auto;">
+        <canvas id="line_chart" width="400" height="400"></canvas>
+      </div>
+    </div>
+  </section><!--/#testimonial-->
+
+  <script>
+    var pie_chart = document.getElementById("pie_chart");
+    var pie_data = [];
+    if(sessionStorage.getItem('pie_data')!=null){
+      pie_data = JSON.parse(sessionStorage.getItem('pie_data'));
+    }
+    var data = {
+        labels: [
+            "Negative",
+            "Positive"
+        ],
+        datasets: [
+            {
+                data: pie_data,
+                backgroundColor: [
+                    "#FF6384",
+                    "#FFCE56"
+                ],
+                hoverBackgroundColor: [
+                    "#FF6384",
+                    "#FFCE56"
+                ]
+            }]
+    };
+
+    var line_chart = document.getElementById("line_chart");
+    var line_data = {};
+    if(sessionStorage.getItem('line_data')!=null){
+      line_data = JSON.parse(sessionStorage.getItem('line_data'));
+    }
+    var line_data_keys = [];
+    var line_data_red = [];
+    var line_data_yellow = [];
+    for(k in line_data){
+      line_data_keys.push(k);
+      line_data_red.push(line_data[k][0]);
+      line_data_yellow.push(line_data[k][1]);
+    }
+    console.log(line_data_keys, line_data_red, line_data_yellow);
+    var data1 = {
+      labels: line_data_keys,
+      datasets: [
+          {
+              label: "Negative Sentiments",
+              fill: false,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "red",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data: line_data_red,
+          },
+          {
+              label: "Postive Sentiments",
+              fill: false,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "yellow",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data: line_data_yellow,
+          }
+      ]
+  };
+
+    // And for a doughnut chart
+    var myDoughnutChart = new Chart(pie_chart, {
+        type: 'doughnut',
+        data: data,
+        options: {}
+    });
+    // Add Line Chart
+    var myLineChart = new Chart(line_chart, {
+      type: 'line',
+      data: data1,
+      options: {}
+    });
+  </script>
+
+  <footer id="footer" class="midnight-blue">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          &copy; 2016 <a target="_blank" class="aribalive" href="http://www.aribalive.com/2016/singapore" title="Ariba Live">Ariba Live!!</a>. All Rights Reserved.
+        </div>
+        <div class="col-sm-6">
+          <ul class="pull-right">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Faq</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a id="gototop" class="gototop" href="#"><i class="icon-chevron-up"></i></a></li><!--#gototop-->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer><!--/#footer-->
+
+</body>
+</html>

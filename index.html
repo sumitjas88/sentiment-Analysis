@@ -1,0 +1,274 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<!--  			pie chart
+ -->
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      //  positive= 40;
+      //  negative=40;
+      //  neutral=40;
+			positive1=0;
+	      negative1=0;
+	      neutral1=0;
+	      positive2=0;
+	      negative2=0;
+	      neutral2=0;
+	      positive3=0;
+	      negative3=0;
+	      neutral3=0;
+	      positive4=0;
+	      negative4=0;
+	      neutral4=0;
+
+
+      google.charts.setOnLoadCallback(function () {
+    		drawChart(count1,count2,count3);
+		});
+      function sendvalue(x,y,z) {
+      	positive=x;
+      	negative=y;
+      	neutral=z;
+				sendvalue1(positive1,negative1,neutral1,positive2,negative2,neutral2,positive3,negative3,neutral3,positive4,negative4,neutral4);
+
+      };
+
+      // pie chart
+      function drawChart(x,y,z) {
+      	console.log ( " yahan tak aya ");
+
+      	dataTable = new google.visualization.DataTable();
+		console.log ( " yahan tak aya ");
+
+
+
+        var newData = [['Result', 'Value'],
+            ['Positive',  x],
+            ['Negative',  y],
+            ['Neutral',  z]]
+
+
+          // determine the number of rows and columns.
+          var numRows = newData.length;
+          var numCols = newData[0].length;
+
+          // in this case the first column is of type 'string'.
+          dataTable.addColumn('string', newData[0][0]);
+
+          // all other columns are of type 'number'.
+          for (var i = 1; i < numCols; i++)
+            dataTable.addColumn('number', newData[0][i]);
+
+          // now add the rows.
+          for (var i = 1; i < numRows; i++)
+            dataTable.addRow(newData[i]);
+        console.log ( " yahan tak aya ");
+
+        var options = {
+          title: 'Analysis',
+          is3D: false,
+        };
+        console.log ( " yahan tak aya ");
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(dataTable, options);
+      }
+    </script>
+
+    <script>
+count1=0;
+count2=0;
+count3=0;
+    cpositive1=0;
+      cnegative1=0;
+      cneutral1=0;
+      cpositive2=0;
+      cnegative2=0;
+      cneutral2=0;
+       cpositive3=0;
+      cnegative3=0;
+      cneutral3=0;
+       cpositive4=0;
+      cnegative4=0;
+      cneutral4=0;
+
+
+var currentDate=new Date().getMonth();
+
+
+    $(function() {
+
+
+   var people = [];
+
+   $.getJSON('http://localhost:3000/analyticMonk/getTweets?id=sapphirenow', function(data) {
+		// console.log(data);
+		  data = JSON.parse(data);
+		//	console.log(data);
+       $.each(data, function(i, f) {
+          var tblRow = "<tr>" + "<td>" + f.text + "</td>" +
+           "<td>" + f.twitt_id + "</td>" + "<td>" + f.location + "</td>" + "<td>" + f.sentiment + "</td>" + "<td>" + f.created_at + "</td>"+ "</tr>"
+           $(tblRow).appendTo("#userdata tbody");
+
+           if(f.sentiment==4) {
+       count1=count1+1;
+      }
+         else if(f.sentiment==0) {
+       count2=count2+1;
+      }
+          else if  (f.sentiment==-1) {
+       count3=count3+1;
+      }
+
+      		 mydate = new Date(f.created_at).getDate();
+
+      		if(mydate>=10 && mydate<=12){
+      			      if(f.sentiment==4) {
+   						 cpositive1=cpositive1+1;
+     					 }
+       				  else if(f.sentiment==0) {
+      			 		cnegative1=cnegative1+1;
+     					 }
+         			 		else if  (f.sentiment==-1) {
+      				 cneutral1=cneutral1+1;
+     			 	}
+
+      		} else if(mydate>=13 && mydate<=15){
+      					   if(f.sentiment==4) {
+   						 cpositive2=cpositive2+1;
+     					 }
+       				  else if(f.sentiment==0) {
+      			 		cnegative2=cnegative2+1;
+     					 }
+         			 		else if  (f.sentiment==-1) {
+      				 cneutral2=cneutral2+1;
+     			 	}
+
+      		} else 	if(mydate>=16 && mydate<=18){
+      					   if(f.sentiment==4) {
+   						 cpositive3=cpositive3+1;
+     					 }
+       				  else if(f.sentiment==0) {
+      			 		cnegative3=cnegative3+1;
+     					 }
+         			 		else if  (f.sentiment==-1) {
+      				 cneutral3=cneutral3+1;
+     			 	}
+      		} else if(mydate>=19 && mydate<=20){
+      					   if(f.sentiment==4) {
+   						 cpositive4=cpositive4+1;
+     					 }
+       				  else if(f.sentiment==0) {
+      			 		cnegative4=cnegative4+1;
+     					 }
+         			 		else if  (f.sentiment==-1) {
+      				 cneutral4=cneutral4+1;
+     			 	}
+      		}
+     });
+       document.getElementById("demo1").innerHTML = count1;
+       	document.getElementById("demo2").innerHTML = count2;
+       	document.getElementById("demo3").innerHTML = count3;
+      //  sendvalue(count1,count2,count3);
+			//
+      // sendvalue1(positive1,negative1,neutral1,positive2,negative2,neutral2,positive3,negative3,neutral3,positive4,negative4,neutral4);
+
+
+
+   });
+
+});
+</script>
+
+<!-- Line chart
+ -->
+
+  <script type="text/javascript">
+      // google.charts.load('current', {'packages':['corechart']});
+
+
+      google.charts.setOnLoadCallback(function () {
+        drawChart1(positive1,negative1,neutral1,positive2,negative2,neutral2,positive3,negative3,neutral3,positive4,negative4,neutral4);
+    });
+
+           function sendvalue1(x1,y1,z1,x2,y2,z2,x3,y3,z3,x4,y4,z4) {
+        positive1=x1;
+        negative1=y1;
+        neutral1=z1;
+         positive2=x2;
+        negative2=y2;
+        neutral2=z2;
+         positive3=x3;
+        negative3=y3;
+        neutral3=z3;
+         positive4=x4;
+        negative4=y4;
+        neutral4=z4;
+      };
+
+
+      function drawChart1(positive1,negative1,neutral1,positive2,negative2,neutral2,positive3,negative3,neutral3,positive4,negative4,neutral4) {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Positive', 'Negative','Neutral'],
+          ['10-12',  positive1,negative1,neutral1],
+          ['13-15',  positive2,negative2,neutral2],
+          ['16-18',  positive3,negative3,neutral3],
+          ['19-21',  positive4,negative4,neutral4]
+        ]);
+				drawChart(count1,count2,count3);
+        var options = {
+          title: 'Analysis',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+    </head>
+    <body>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('formCtrl', function($scope) {
+    $scope.name = "Username";
+});
+
+
+</script>
+
+<table id= "userdata" border="2">
+  <thead>
+            <th>Text</th>
+            <th>Twit Id</th>
+            <th>Location</th>
+            <th>Sentiment</th>
+            <th>Date</th>
+        </thead>
+      <tbody>
+
+       </tbody>
+   </table>
+
+
+ <p id="demo1"></p>
+  <p id="demo2"></p>
+ <p id="demo3"></p>
+
+	<button type="button" onclick="drawChart1(cpositive1,cnegative1,cneutral1,cpositive2,cnegative2,cneutral2,cpositive3,cnegative3,cneutral3,cpositive4,cnegative4,cneutral4)">Click</button>
+  <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+
+
+  <div id="curve_chart" style="width: 900px; height: 500px"></div>
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+[{
+  "text": "Clark is good",
+  "twitt_id": "Kent04",
+  "location": "USA",
+  "sentiment": "positive",
+  "date": "2012-04-23T18:25:43.511Z"
+}, {
+  "text": "Clark is good",
+  "twitt_id": "Kent04",
+  "location": "USA",
+  "sentiment": "negative",
+  "date": "2012-09-23T18:25:43.511Z"
+}, {
+  "text": "Clark is good",
+  "twitt_id": "Kent04",
+  "location": "USA",
+  "sentiment": "negative",
+  "date": "2012-06-23T18:25:43.511Z"
+}, {
+  "text": "Clark is good",
+  "twitt_id": "Kent04",
+  "location": "USA",
+  "sentiment": "negative",
+  "date": "2012-11-23T18:25:43.511Z"
+}, {
+  "text": "Clark is good",
+  "twitt_id": "Kent04",
+  "location": "USA",
+  "sentiment": "neutral",
+  "date": "2012-01-23T18:25:43.511Z"
+}, {
+  "text": "Clark is good",
+  "twitt_id": "Kent04",
+  "location": "USA",
+  "sentiment": "neutral",
+  "date": "2012-03-23T18:25:43.511Z"
+}, {
+  "text": "Clark is good",
+  "twitt_id": "Kent04",
+  "location": "USA",
+  "sentiment": "neutral",
+  "date": "2012-02-23T18:25:43.511Z"
+}, {
+  "text": "Clark is good",
+  "twitt_id": "Kent04",
+  "location": "USA",
+  "sentiment": "positive",
+  "date": "2012-07-23T18:25:43.511Z"
+}]
